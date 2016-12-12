@@ -12,9 +12,18 @@ type MainController struct {
 func (c *MainController) Get() {
     cacheManager := cache.GetCacheManager()
 
-    cacheManager.Put("key", "test", 0)
+    c.Data["NowCache"] = cacheManager.Get("cache")
+    c.TplName = "index.tpl"
+}
 
-    c.Data["Website"] = "beego.me"
-    c.Data["Email"] = cacheManager.Get("key")
+func (c *MainController) Post() {
+    cacheManager := cache.GetCacheManager()
+
+    item := c.GetString("Item")
+
+    cacheManager.Put("cache", item, 0)
+
+    c.Data["NowCache"] = item
+
     c.TplName = "index.tpl"
 }
